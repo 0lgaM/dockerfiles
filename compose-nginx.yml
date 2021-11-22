@@ -1,0 +1,38 @@
+version: '3'
+services:
+        nginx:
+                image: nginx:mainline-alpine
+                ports:
+                        - 80:80
+                volumes:
+                        - ./sitefiles:/home
+                        - ./configs/nginx_default.conf:/etc/nginx/conf.d/default.conf
+
+                depends_on:
+                        - php-fpm
+
+        php-fpm:
+                image: bitnami/php-fpm:8.0
+                volumes:
+                        - ./sitefiles:/home
+                depends_on:
+                        - database                
+
+
+        database:
+                image: mysql
+                ports:
+                        - 3306:3306
+                volumes:
+                        - ./database:/var/lib/mysql
+                environment:
+                        MYSQL_ROOT_PASSWORD: "root"
+                        MYSQL_DATABASE: "base_1"
+                        MYSQL_USER: "user_1"
+                        MYSQL_PASSWORD: "passwd"
+
+
+volumes:
+        sitefiles:
+        database:
+        configs:

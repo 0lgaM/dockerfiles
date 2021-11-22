@@ -1,0 +1,32 @@
+version: "3"
+services:
+  
+        ubuntu-apache:
+                image: ubuntu-apache:3.0
+                ports:
+                        - 80:80
+                volumes:
+                        - ./sitefiles:/var/www/html
+                        - ./configs/httpd.conf:/etc/apache2/apache2.conf
+                depends_on:
+                        - database
+
+        database:
+                image: mysql
+                ports: 
+                        - 3306:3306
+                volumes:
+                        - ./database:/var/lib/mysql
+                environment:
+                        MYSQL_ROOT_PASSWORD: "root"
+                        MYSQL_DATABASE: "base_1"
+                        MYSQL_USER: "user_1"
+                        MYSQL_PASSWORD: "passwd" 
+        
+
+volumes:
+        sitefiles:
+        database:
+        configs:
+       
+
